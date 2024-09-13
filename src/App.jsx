@@ -1,36 +1,35 @@
-import React from "react";
+import "./style.css";
 
-class Counter extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { count: 0 };
-    this.handleDecrement = this.handleDecrement.bind(this);
-    this.handleIncrement = this.handleIncrement.bind(this);
-  }
-
-  handleDecrement() {
-    this.setState((cur) => {
-      return { count: cur.count - 1 };
-    });
-  }
-
-  handleIncrement() {
-    this.setState((cur) => {
-      return { count: cur.count + 1 };
-    });
-  }
-  render() {
-    const date = new Date(Date.now());
-    date.setDate(date.getDay() + this.state.count);
-    return (
-      <div className="count">
-        <button onClick={this.handleDecrement}>-</button>
-        <span>{`${date.getDay() + "," + date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear()}`}</span>
-        <button onClick={this.handleIncrement}>+</button>
-      </div>
-    );
-  }
+function App() {
+  return (
+    <div className="app">
+      <h1>Classy Weather</h1>
+      <input type="text" placeholder="Search..." />
+      <h2>Weather</h2>
+      <WeatherList />
+    </div>
+  );
 }
 
-export default Counter;
+function WeatherList() {
+  return (
+    <ul className="weather">
+      {Array.from({ length: 7 }, (item, i) => {
+        return <WeatherDayCard data={i} />;
+      })}
+    </ul>
+  );
+}
+
+function WeatherDayCard({ data }) {
+  return (
+    <li className="day">
+      <span>☁️</span>
+      <p>Today</p>
+      <p>
+        7-<strong>12</strong>
+      </p>
+    </li>
+  );
+}
+export default App;
