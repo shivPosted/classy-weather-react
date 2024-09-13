@@ -1,33 +1,57 @@
 import "./style.css";
-
+import { useState } from "react";
+import { useWeather } from "./util";
 function App() {
+  const [query, setQuery] = useState("");
+  const { isLoading, weather } = useWeather(query);
+
+  console.log(weather);
   return (
     <div className="app">
       <h1>Classy Weather</h1>
-      <input type="text" placeholder="Search..." />
-      <h2>Weather</h2>
-      <WeatherList />
+      <input
+        type="text"
+        placeholder="Search..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      {weather && (
+        <h2>
+          Weather {weather.name}
+          <span className="countryCode">{weather.countryCode}</span>
+        </h2>
+      )}
+      {isLoading ? (
+        <p className="loader">Loading...</p>
+      ) : (
+        <WeatherList weatherData={weather} />
+      )}
     </div>
   );
 }
 
-function WeatherList() {
+function WeatherList({ weatherData }) {
   return (
     <ul className="weather">
-      {Array.from({ length: 7 }, (item, i) => {
-        return <WeatherDayCard data={i} />;
-      })}
+      {weatherData.dayArr?.map((day, i) => (
+        <WeatherDayCard
+          key={i}
+          day={day}
+          tempMax={weatherData.tempMax[i]}
+          tempMin={weatherData.tempMin[i]}
+        />
+      ))}
     </ul>
   );
 }
 
-function WeatherDayCard({ data }) {
+function WeatherDayCard({ day, tempMax, tempMin }) {
   return (
     <li className="day">
       <span>☁️</span>
-      <p>Today</p>
+      <p>{day}</p>
       <p>
-        7-<strong>12</strong>
+        {tempMin}°-<strong>{tempMax}°</strong>
       </p>
     </li>
   );
