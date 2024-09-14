@@ -1,7 +1,8 @@
 import "./style.css";
 import { useEffect, useState } from "react";
-import { useWeather, fetchWeatherData } from "./util";
+import { fetchWeatherData } from "./util";
 
+import useWeather from "./useWeather";
 function App() {
   const [query, setQuery] = useState("");
   const { isLoading, weather, setWeather } = useWeather(query);
